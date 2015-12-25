@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/widget_margin">
+
+    <FrameLayout
+        android:id="@+id/widget"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/green01">
+        <ImageView
+            android:id="@+id/widget_picture"
+            android:layout_width="520dp"
+            android:layout_height="150dp"
+            android:contentDescription="@string/app_name"
+            android:layout_gravity="center"
+            android:src="@drawable/football_grass"
+            />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/primary_light">
+        <ListView
+            android:id="@+id/widget_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            tools:listitem="@layout/widget_detail_item"/>
+        <TextView
+            android:id="@+id/widget_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:text="@string/empty_games_list"/>
+    </FrameLayout>
+
+</LinearLayout>
