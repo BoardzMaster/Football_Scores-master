@@ -23,6 +23,7 @@
     <string name="about">About</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="empty_games_list">No Games available</string>
+    <string name="widget_name">TODAY FOOTBALL SCORES</string>
     <string name="about_text">
         empty_forecast_list
         This Application get Football Matches Score for the Premier League,Seria A,Bundesliga,Primera Division

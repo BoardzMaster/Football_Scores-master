@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RemoteViewsService;
 import android.widget.RemoteViews;
@@ -25,7 +27,10 @@ public class FootballRemoteViewService  extends RemoteViewsService {
             DatabaseContract.scores_table.HOME_COL,
             DatabaseContract.scores_table.AWAY_COL,
             DatabaseContract.scores_table.DATE_COL,
-            DatabaseContract.scores_table.TIME_COL
+            DatabaseContract.scores_table.TIME_COL,
+            DatabaseContract.scores_table.HOME_GOALS_COL,
+            DatabaseContract.scores_table.AWAY_GOALS_COL
+
     };
     // these indices must match the projection
     private static final int INDEX_MATCH_ID = 0;
@@ -34,6 +39,8 @@ public class FootballRemoteViewService  extends RemoteViewsService {
     private static final int INDEX_AWAY_COL = 3;
     private static final int INDEX_DATE_COL = 4;
     private static final int INDEX_TIME_COL = 5;
+    public static final int  INDEX_HOME_GOALS = 6;
+    public static final int  INDEX_AWAY_GOALS = 7;
 
 
 
@@ -62,8 +69,7 @@ public class FootballRemoteViewService  extends RemoteViewsService {
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 Date dateobj = new Date();
 
-                Cursor data =
-                        getContentResolver().query(dateuri, MATCH_COLUMNS, null,
+                data = getContentResolver().query(dateuri, MATCH_COLUMNS, null,
                                 new String[]{df.format(dateobj )}, DatabaseContract.scores_table.DATE_COL + " ASC");
 
                 Binder.restoreCallingIdentity(identityToken);
@@ -102,24 +108,28 @@ public class FootballRemoteViewService  extends RemoteViewsService {
                         data.getString(INDEX_AWAY_COL)));
                 String descriptionAway = data.getString(INDEX_AWAY_COL);
                 String matchTime = data.getString(INDEX_TIME_COL);
+                String matchScore = Utilies.getScores(data.getInt(INDEX_HOME_GOALS), data.getInt(INDEX_AWAY_GOALS));
 
+                views.setTextViewText(R.id.widget_home_name, descriptionHome);
+                views.setTextViewText(R.id.widget_away_name, descriptionAway);
 
-               // views.setImageViewResource(R.id.widget_home_crest, matchHomeIcon);
-               // views.setImageViewResource(R.id.widget_away_crest, matchAwayIcon);
-                // Content Descriptions for RemoteViews were only added in ICS MR1
+                views.setTextViewText(R.id.widget_data_textview, matchTime);
+                views.setTextViewText(R.id.widget_score_textview, matchScore);
 
-               // views.setTextViewText(R.id.widget_home_name, descriptionHome);
+                views.setImageViewResource(R.id.widget_home_crest, matchHomeIcon);
+                views.setImageViewResource(R.id.widget_away_crest, matchAwayIcon);
 
-               // views.setTextViewText(R.id.widget_time, matchTime);
-               // views.setTextViewText(R.id.wiget_away_name, descriptionAway);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                     setRemoteContentDescription(views, descriptionHome);
                 }
                 final Intent fillInIntent = new Intent();
 
-                Uri dateuri=  DatabaseContract.scores_table.buildScoreWithDate();
-                fillInIntent.setData(dateuri);
-                views.setOnClickFillInIntent(R.id.widget_list_item, fillInIntent);
+                Uri date_uri=  DatabaseContract.scores_table.buildScoreWithDate();
+                //fillInIntent.setData(date_uri);
+                // Send the matchId var to the MainActivity
+                fillInIntent.putExtra(MainActivity.DETAIL_MATCH_ID, matchId);
+                fillInIntent.putExtra(MainActivity.TODAY_VIEW_OPEN,2);
+                views.setOnClickFillInIntent(R.id.widget_item_id, fillInIntent);
                 return views;
             }
 
@@ -130,12 +140,13 @@ public class FootballRemoteViewService  extends RemoteViewsService {
 
             @Override
             public RemoteViews getLoadingView() {
-                return new RemoteViews(getPackageName(), R.layout.widget_detail_item);
+               // return new RemoteViews(getPackageName(), R.layout.widget_detail_item);
+                  return new RemoteViews(getPackageName(), R.layout.widget_detail_item);
             }
 
             @Override
             public int getViewTypeCount() {
-                return 0;
+                return 1;
             }
 
             @Override

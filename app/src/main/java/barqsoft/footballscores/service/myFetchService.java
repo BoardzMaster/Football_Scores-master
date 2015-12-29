@@ -31,6 +31,9 @@ import barqsoft.footballscores.R;
 public class myFetchService extends IntentService
 {
     public static final String LOG_TAG = "myFetchService";
+    public static final String ACTION_DATA_UPDATED =
+            "barqsoft.footballscores.ACTION_DATA_UPDATED";
+
     public myFetchService()
     {
         super("myFetchService");
@@ -43,6 +46,15 @@ public class myFetchService extends IntentService
         getData("p2");
 
         return;
+    }
+
+
+    private void updateWidgets() {
+        Context context = getApplicationContext();
+        // Setting the package ensures that only components in our app will receive the broadcast
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
+                .setPackage(context.getPackageName());
+        context.sendBroadcast(dataUpdatedIntent);
     }
 
     private void getData (String timeFrame)
@@ -147,6 +159,9 @@ public class myFetchService extends IntentService
         final String PRIMERA_LIGA = "402";
         final String Bundesliga3 = "403";
         final String EREDIVISIE = "404";
+        final String CHAMPIONS_LEAGUE = "405";
+
+        final String TESTED_LEAGUE = "357";
 
 
         final String SEASON_LINK = "http://api.football-data.org/alpha/soccerseasons/";
@@ -192,11 +207,21 @@ public class myFetchService extends IntentService
                 //add leagues here in order to have them be added to the DB.
                 // If you are finding no data in the app, check that this contains all the leagues.
                 // If it doesn't, that can cause an empty DB, bypassing the dummy data routine.
-                if(     League.equals(PREMIER_LEAGUE)      ||
-                        League.equals(SERIE_A)             ||
-                        League.equals(BUNDESLIGA1)         ||
-                        League.equals(BUNDESLIGA2)         ||
-                        League.equals(PRIMERA_DIVISION)     )
+                if(
+                        //League.equals(TESTED_LEAGUE)       ||
+                        //League.equals(CHAMPIONS_LEAGUE)    ||
+                        //League.equals(PRIMERA_LIGA)        ||
+                        //League.equals(Bundesliga3)         ||
+                        //League.equals(EREDIVISIE)          ||
+                        //League.equals(LIGUE1)              ||
+                        //League.equals(LIGUE2)              ||
+                        //League.equals(SEGUNDA_DIVISION)    ||
+                        League.equals(PREMIER_LEAGUE)
+                        //League.equals(SERIE_A)             ||
+                        //League.equals(BUNDESLIGA1)         ||
+                        // League.equals(BUNDESLIGA2)        ||
+                        //League.equals(PRIMERA_DIVISION)
+                        )
                 {
                     match_id = match_data.getJSONObject(LINKS).getJSONObject(SELF).
                             getString("href");
@@ -248,13 +273,13 @@ public class myFetchService extends IntentService
                     match_values.put(DatabaseContract.scores_table.MATCH_DAY,match_day);
                     //log spam
 
-                    //Log.v(LOG_TAG,match_id);
-                    //Log.v(LOG_TAG,mDate);
-                    //Log.v(LOG_TAG,mTime);
-                    //Log.v(LOG_TAG,Home);
-                    //Log.v(LOG_TAG,Away);
-                    //Log.v(LOG_TAG,Home_goals);
-                    //Log.v(LOG_TAG,Away_goals);
+                    Log.v(LOG_TAG,match_id);
+                    Log.v(LOG_TAG,mDate);
+                    Log.v(LOG_TAG,mTime);
+                    Log.v(LOG_TAG,Home);
+                    Log.v(LOG_TAG,Away);
+                    Log.v(LOG_TAG,Home_goals);
+                    Log.v(LOG_TAG,Away_goals);
 
                     values.add(match_values);
                 }
@@ -265,7 +290,9 @@ public class myFetchService extends IntentService
             inserted_data = mContext.getContentResolver().bulkInsert(
                     DatabaseContract.BASE_CONTENT_URI,insert_data);
 
-            //Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
+            updateWidgets();
+            Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
+
         }
         catch (JSONException e)
         {

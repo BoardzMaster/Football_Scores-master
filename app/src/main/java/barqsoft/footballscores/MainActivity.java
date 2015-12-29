@@ -1,6 +1,7 @@
 package barqsoft.footballscores;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity
 {
+    static final String DETAIL_MATCH_ID = "Match_ID";
+    static final String TODAY_VIEW_OPEN = "Today_View";
     public static int selected_match_id;
     public static int current_fragment = 2;
     public static String LOG_TAG = "MainActivity";
@@ -19,6 +22,17 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(LOG_TAG, "Reached MainActivity onCreate");
+
+        // Get the match_id from the selected widget's item
+        if (getIntent() != null){
+            selected_match_id = getIntent().getIntExtra(DETAIL_MATCH_ID,selected_match_id);
+            current_fragment = getIntent().getIntExtra(TODAY_VIEW_OPEN,current_fragment);
+        }
+        else
+        {
+            selected_match_id = 0;
+        }
+
         if (savedInstanceState == null) {
             my_main = new PagerFragment();
             getSupportFragmentManager().beginTransaction()
