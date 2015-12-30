@@ -47,6 +47,7 @@ public class scoresAdapter extends CursorAdapter
     @Override
     public void bindView(View view, final Context context, Cursor cursor)
     {
+
         final ViewHolder mHolder = (ViewHolder) view.getTag();
         mHolder.home_name.setText(cursor.getString(COL_HOME));
         mHolder.away_name.setText(cursor.getString(COL_AWAY));
@@ -100,5 +101,6 @@ public class scoresAdapter extends CursorAdapter
         shareIntent.putExtra(Intent.EXTRA_TEXT, ShareText + FOOTBALL_SCORES_HASHTAG);
         return shareIntent;
     }
+
 
 }

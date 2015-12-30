@@ -6,6 +6,9 @@
         android:name="android.permission.INTERNET"
         android:maxSdkVersion="22" />
 
+    <!-- Network State Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -37,19 +40,32 @@
         <service android:name=".service.myFetchService" />
 
         <receiver
-            android:name=".FootballAppWidgetProvider"
-            android:enabled="@bool/widget_detail_enabled" >
+            android:name=".widget.TodayWidgetProvider"
+            android:label="@string/title_widget_today" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.example.android.sunshine.app.ACTION_DATA_UPDATED" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/football_app_widget_today" />
+        </receiver>
+        <service android:name=".widget.TodayWidgetIntentService" />
+
+        <receiver
+            android:name=".widget.FootballAppWidgetProvider"
+            android:enabled="@bool/widget_detail_enabled"
+            android:label="@string/title_widget_collection">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
                 <action android:name="barqsoft.footballscores.ACTION_DATA_UPDATED"/>
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/football_app_widget_info" />
+                android:resource="@xml/football_app_widget_collection" />
         </receiver>
 
         <service
-            android:name=".FootballRemoteViewService"
+            android:name=".widget.FootballRemoteViewService"
             android:enabled="@bool/widget_detail_enabled"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" >

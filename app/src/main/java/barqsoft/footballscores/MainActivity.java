@@ -10,8 +10,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity
 {
-    static final String DETAIL_MATCH_ID = "Match_ID";
-    static final String TODAY_VIEW_OPEN = "Today_View";
+    public static final String DETAIL_MATCH_ID = "Match_ID";
+    public static final String TODAY_VIEW_OPEN = "Today_View";
     public static int selected_match_id;
     public static int current_fragment = 2;
     public static String LOG_TAG = "MainActivity";

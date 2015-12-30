@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import barqsoft.footballscores.service.myFetchService;
 
@@ -21,6 +23,7 @@ import barqsoft.footballscores.service.myFetchService;
 public class MainScreenFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
     public scoresAdapter mAdapter;
+    private ListView  score_list;
     public static final int SCORES_LOADER = 0;
     private String[] fragmentdate = new String[1];
     private int last_selected_item = -1;
@@ -43,13 +46,18 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
                              final Bundle savedInstanceState) {
         update_scores();
 
+        mAdapter = new scoresAdapter(getActivity(),null,0);
+
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        final ListView score_list = (ListView) rootView.findViewById(R.id.scores_list);
-        mAdapter = new scoresAdapter(getActivity(),null,0);
+
+        score_list = (ListView) rootView.findViewById(R.id.scores_list);
+        View empty_list = rootView.findViewById(R.id.games_list_empty);
+        score_list.setEmptyView(empty_list);
         score_list.setAdapter(mAdapter);
-        getLoaderManager().initLoader(SCORES_LOADER,null,this);
+        getLoaderManager().initLoader(SCORES_LOADER, null, this);
         mAdapter.detail_match_id = MainActivity.selected_match_id;
+
 
         score_list.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -94,6 +102,9 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
         }
         //Log.v(FetchScoreTask.LOG_TAG,"Loader query: " + String.valueOf(i));
         mAdapter.swapCursor(cursor);
+
+        // Check if the Adapter is empty and why
+        updateEmptyView();
         //mAdapter.notifyDataSetChanged();
     }
 
@@ -101,6 +112,25 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     public void onLoaderReset(Loader<Cursor> cursorLoader)
     {
         mAdapter.swapCursor(null);
+    }
+
+
+    /*
+        Updates the empty list view with contextually relevant information that the user can
+        use to determine why they aren't seeing weather.
+     */
+    private void updateEmptyView() {
+        if ( mAdapter.getCount() == 0 ) {
+            TextView tv = (TextView) getView().findViewById(R.id.games_list_empty);
+            if ( null != tv ) {
+                // if cursor is empty, why? do we have an invalid location
+                int message = R.string.empty_games_list;
+                if (!Utilies.isNetworkAvailable(getActivity()) ) {
+                    message = R.string.no_internet_connection;
+                }
+                tv.setText(message);
+            }
+        }
     }
 
 

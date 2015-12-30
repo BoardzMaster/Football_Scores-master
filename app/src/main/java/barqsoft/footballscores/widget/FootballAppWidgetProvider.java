@@ -1,4 +1,4 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.widget;
 
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
@@ -12,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
 
+import barqsoft.footballscores.MainActivity;
+import barqsoft.footballscores.R;
 import barqsoft.footballscores.service.myFetchService;
 
 /**
