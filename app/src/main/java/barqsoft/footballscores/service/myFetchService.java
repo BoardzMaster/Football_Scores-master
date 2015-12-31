@@ -210,14 +210,14 @@ public class myFetchService extends IntentService
                 // If you are finding no data in the app, check that this contains all the leagues.
                 // If it doesn't, that can cause an empty DB, bypassing the dummy data routine.
                 if(
-                        //League.equals(TESTED_LEAGUE)       ||
-                        //League.equals(CHAMPIONS_LEAGUE)    ||
-                        //League.equals(PRIMERA_LIGA)        ||
-                        //League.equals(Bundesliga3)         ||
-                        //League.equals(EREDIVISIE)          ||
-                        //League.equals(LIGUE1)              ||
+                        League.equals(TESTED_LEAGUE)       ||
+                        League.equals(CHAMPIONS_LEAGUE)    ||
+                        League.equals(PRIMERA_LIGA)        ||
+                        League.equals(Bundesliga3)         ||
+                        League.equals(EREDIVISIE)          ||
+                        League.equals(LIGUE1)              ||
                         //League.equals(LIGUE2)              ||
-                        //League.equals(SEGUNDA_DIVISION)    ||
+                        League.equals(SEGUNDA_DIVISION)    ||
                         League.equals(PREMIER_LEAGUE)
                         //League.equals(SERIE_A)             ||
                         //League.equals(BUNDESLIGA1)         ||
@@ -270,18 +270,18 @@ public class myFetchService extends IntentService
                     match_values.put(DatabaseContract.scores_table.HOME_COL,Home);
                     match_values.put(DatabaseContract.scores_table.AWAY_COL,Away);
                     match_values.put(DatabaseContract.scores_table.HOME_GOALS_COL,Home_goals);
-                    match_values.put(DatabaseContract.scores_table.AWAY_GOALS_COL,Away_goals);
-                    match_values.put(DatabaseContract.scores_table.LEAGUE_COL,League);
-                    match_values.put(DatabaseContract.scores_table.MATCH_DAY,match_day);
+                    match_values.put(DatabaseContract.scores_table.AWAY_GOALS_COL, Away_goals);
+                    match_values.put(DatabaseContract.scores_table.LEAGUE_COL, League);
+                    match_values.put(DatabaseContract.scores_table.MATCH_DAY, match_day);
                     //log spam
 
-                    Log.v(LOG_TAG,match_id);
-                    Log.v(LOG_TAG,mDate);
-                    Log.v(LOG_TAG,mTime);
-                    Log.v(LOG_TAG,Home);
-                    Log.v(LOG_TAG,Away);
-                    Log.v(LOG_TAG,Home_goals);
-                    Log.v(LOG_TAG,Away_goals);
+                    Log.v(LOG_TAG,"Match ID: " + match_id);
+                    Log.v(LOG_TAG,"Date: " + mDate);
+                    Log.v(LOG_TAG,"Time: " + mTime);
+                    Log.v(LOG_TAG,"Home: " +Home);
+                    Log.v(LOG_TAG,"Away: " +Away);
+                    Log.v(LOG_TAG,"Home goals: " +Home_goals);
+                    Log.v(LOG_TAG,"Away goals: " +Away_goals);
 
                     values.add(match_values);
                 }

@@ -4,8 +4,9 @@
     android:minHeight="180dp"
     android:updatePeriodMillis="0"
     android:previewImage="@drawable/football_grass"
-    android:initialLayout="@layout/football_app_widget" android:resizeMode="horizontal|vertical"
+    android:initialLayout="@layout/football_app_widget"
+    android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
-    android:initialKeyguardLayout="@layout/football_app_widget">
+    android:initialKeyguardLayout="@layout/widget_detail_item">
     android:widgetCategory="home_screen|keyguard"
 </appwidget-provider>

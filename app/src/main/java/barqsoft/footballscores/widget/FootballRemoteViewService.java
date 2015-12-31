@@ -122,9 +122,8 @@ public class FootballRemoteViewService  extends RemoteViewsService {
                 views.setImageViewResource(R.id.widget_home_crest, matchHomeIcon);
                 views.setImageViewResource(R.id.widget_away_crest, matchAwayIcon);
 
-                String description = descriptionHome + " " + matchScore + " " + descriptionAway;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                    setRemoteContentDescription(views, description);
+                    setRemoteContentDescription(views, descriptionHome,descriptionAway);
                 }
 
                 final Intent fillInIntent = new Intent();
@@ -138,8 +137,9 @@ public class FootballRemoteViewService  extends RemoteViewsService {
             }
 
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-            private void setRemoteContentDescription(RemoteViews views, String description) {
-                views.setContentDescription(R.id.widget_score_textview, description);
+            private void setRemoteContentDescription(RemoteViews views, String description_home, String description_away) {
+                views.setContentDescription(R.id.widget_home_crest, description_home);
+                views.setContentDescription(R.id.widget_away_crest, description_away);
             }
 
             @Override

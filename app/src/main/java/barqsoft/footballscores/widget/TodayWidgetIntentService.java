@@ -70,21 +70,29 @@ public class TodayWidgetIntentService extends IntentService {
         Cursor data = getContentResolver().query(dateuri, MATCH_COLUMNS, null,
                 new String[]{df.format(dateobj )}, DatabaseContract.scores_table.DATE_COL + " ASC");
 
+        int layoutId,layoutId_empty;
+        layoutId = R.layout.widget_today;
+        layoutId_empty =R.layout.empty_today_widget;
+
+
+
+
         if (data == null) {
+            RemoteViews views = new RemoteViews(getPackageName(), layoutId_empty);
             return;
         }
         if (!data.moveToFirst()) {
+            RemoteViews views = new RemoteViews(getPackageName(), layoutId_empty);
             data.close();
+
             return;
         }
 
         for (int appWidgetId : appWidgetIds) {
             Log.e(LOG_TAG, "datacount" + data.getCount());
 
-            int layoutId;
-            layoutId = R.layout.widget_today;
-
             RemoteViews views = new RemoteViews(getPackageName(), layoutId);
+
 
             int matchId = data.getInt(INDEX_MATCH_ID);
             int matchHomeIcon = (Utilies.getTeamCrestByTeamName(
@@ -97,10 +105,7 @@ public class TodayWidgetIntentService extends IntentService {
             String matchTime = data.getString(INDEX_TIME_COL);
             String matchScore = Utilies.getScores(data.getInt(INDEX_HOME_GOALS), data.getInt(INDEX_AWAY_GOALS));
 
-            String description = descriptionHome + " " + matchScore + " " + descriptionAway;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                setRemoteContentDescription(views, description);
-            }
+
 
             views.setTextViewText(R.id.today_widget_home_name, descriptionHome);
             views.setTextViewText(R.id.today_widget_away_name, descriptionAway);
@@ -110,6 +115,11 @@ public class TodayWidgetIntentService extends IntentService {
 
             views.setImageViewResource(R.id.today_widget_home_crest, matchHomeIcon);
             views.setImageViewResource(R.id.today_widget_away_crest, matchAwayIcon);
+
+            String description = descriptionHome + " " + matchScore + " " + descriptionAway;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                setRemoteContentDescription(views,descriptionHome,descriptionAway);
+            }
 
             // Create an Intent to launch MainActivity
             Intent launchIntent = new Intent(this, MainActivity.class);
@@ -124,7 +134,8 @@ public class TodayWidgetIntentService extends IntentService {
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-    private void setRemoteContentDescription(RemoteViews views, String description) {
-        views.setContentDescription(R.id.today_widget_score_textview, description);
+    private void setRemoteContentDescription(RemoteViews views, String description_home, String description_away) {
+        views.setContentDescription(R.id.today_widget_home_crest, description_home);
+        views.setContentDescription(R.id.today_widget_away_crest, description_away);
     }
 }

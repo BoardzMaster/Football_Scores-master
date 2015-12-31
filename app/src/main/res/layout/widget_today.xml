@@ -79,4 +79,13 @@
                 android:id="@+id/today_widget_away_name"/>
         </LinearLayout>
     </LinearLayout>
+    <TextView
+        android:id="@+id/widget_today_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:fontFamily="sans-serif-condensed"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:text="@string/empty_games_list"
+        android:textColor="#000000" />
 </FrameLayout>

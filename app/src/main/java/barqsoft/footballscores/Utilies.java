@@ -34,7 +34,7 @@ public class Utilies
         {
             if (match_day <= 6)
             {
-                return "Group Stages, Matchday : 6";
+                return "Group Stages, Matchday : " + String.valueOf(match_day) ;
             }
             else if(match_day == 7 || match_day == 8)
             {
